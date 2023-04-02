@@ -1,8 +1,10 @@
 import json
 
+# 导入一份干员基本信息以备不时之需
 with open('operators_info.json', 'r', encoding='utf-8') as ops_data_file:
     ops_data = json.load(ops_data_file)
 
+# 输出测试信息
 for i in range(10):
     print(list(ops_data.keys())[i])
 
@@ -17,8 +19,6 @@ class DayTotal:
 
 
 # 以设施为单位进行计算
-
-# 以贸易站为例
 class Facility:
     renjianyanhuo = 0
     siweilianhuan = 0
@@ -31,6 +31,7 @@ class Facility:
         self.lvl = 1
 
 
+# 以贸易站为例
 class TradeStation(Facility):
     # 全局变量
     totalNum = 0
@@ -51,7 +52,6 @@ class TradeStation(Facility):
         self.char_Lappland = 0
         self.char_Texas = 0
         self.char_Exusiai = 0
-
 
         # 阵营判定区
         self.camp_SeaHunter = 0
@@ -152,21 +152,6 @@ class TradeStation(Facility):
         pass
 
 
-class Position:
-    def __init__(self, operator, mood):
-        self.operator = 'none'
-        self.mood = 24
-
-
-class operator:
-    def __init__(self):
-        self.name = 'name'
-
-
-class room:
-    def __init__(self, type, level):
-        self.type = 'none'
-        self.level = 1
 
 
 def print_hi(name):
