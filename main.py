@@ -48,11 +48,6 @@ class TradeStation(Facility):
         super().__init__()
         TradeStation.totalNum += 1
 
-        # 干员判定区
-        self.char_Lappland = 0
-        self.char_Texas = 0
-        self.char_Exusiai = 0
-
         # 阵营判定区
         self.camp_SeaHunter = 0
         self.camp_RainbowSix = 0
@@ -70,10 +65,7 @@ class TradeStation(Facility):
         self.orderLimit = 6
         self.workerNum = 0
 
-        # 坑位区
-        self.operator_1 = 'none'
-        self.operator_1_mood = 0
-
+    # 干员进驻
     def operator_load(self, operator, elite, position, mood=24):
         self.pit[position][4] = self.pit[position][0]
         self.pit[position][0] = operator
@@ -141,17 +133,16 @@ class TradeStation(Facility):
                     self.pit[i][6] = '物流专家'
                     self.efficiency += 0.15
 
+    # 信息输出
     def show_station_info(self):
         for i in range(3):
             print('干员' + self.pit[i][0] + str(self.pit[i][6]))
 
         print('总效率' + str(self.efficiency))
 
-
+    # 心情验算，这些以后再说
     def cal_moodConsumption(self):
         pass
-
-
 
 
 def print_hi(name):
