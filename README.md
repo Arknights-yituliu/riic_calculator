@@ -11,7 +11,7 @@ https://github.com/Arknights-yituliu/riic_simulator
 https://github.com/Arknights-yituliu/riic_calculator
 
 为什么要整方案B呢
-因为我太菜，看不懂方案A（划掉）
-所以采用了比较笨的方法进行暴力模拟（每3分钟计算一次产能）
-先写着，到时候看看哪个方案维护和后续开发更方便
+因为我太菜，看不懂方案A（划掉）<br>
+所以采用了比较笨的方法进行暴力模拟（每3分钟计算一次产能）<br>
+先写着，到时候看看哪个方案维护和后续开发更方便<br>
 如果都不错的话，整两个计算引擎也不是不行，还能互相核对一下答案
