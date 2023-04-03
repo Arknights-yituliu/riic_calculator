@@ -20,8 +20,17 @@ class DayTotal:
 
 # 以设施为单位进行计算
 class Facility:
-    renjianyanhuo = 0
-    siweilianhuan = 0
+    combo_MengJing = 0
+    combo_JiYiSuiPian = 0
+    combo_XiaoJie = 0
+    combo_GanZhiXinXi = 0
+    combo_RenJianYanHuo = 0
+    combo_SiWeiLianHuan = 0
+    combo_WuShengGongMing = 0
+    combo_WuShuJieJing = 0
+
+    combo_QingBaoChuBei = 0
+    combo_WuSaSiTeYin = 0
 
     def __init__(self):
         # 干员，精英等级，心情，工作时长，前任干员，心情消耗，技能名称
@@ -71,10 +80,31 @@ class TradeStation(Facility):
         self.pit[position][0] = operator
         self.pit[position][1] = elite
         self.pit[position][2] = mood
-        # 重置工作时长
+        # 换干员则重置工作时长
         if self.pit[position][4] != self.pit[position][0]:
             self.pit[position][3] = 0
         self.pit[position][5] = 1
+
+
+    # 预先计算组合
+    # def cal_combo(self):
+    #     for i in range(3):
+    #         # 铎铃
+    #         if self.pit[i][0] == 'Wind Chimes':
+    #             self.pit[i][6] = '跋山涉水'
+    #
+    #
+    #             if 'Texas' in self.pit[0][0] or 'Texas' in self.pit[1][0] or 'Texas' in self.pit[2][0]:
+    #                 self.pit[i][5] -= 0.1
+    #                 self.orderLimit += 2
+    #             # 精二
+    #             if self.pit[i][1] == 2:
+    #                 self.pit[i][6] = '醉翁之意·β'
+    #                 if 'Texas' in self.pit[0][0] or 'Texas' in self.pit[1][0] or 'Texas' in self.pit[2][0]:
+    #                     self.pit[i][5] = 0.8
+    #                     self.orderLimit -= 4
+    #             continue
+
 
     # 效率计算
     def cal_efficiency(self):
@@ -100,6 +130,7 @@ class TradeStation(Facility):
                     if 'Texas' in self.pit[0][0] or 'Texas' in self.pit[1][0] or 'Texas' in self.pit[2][0]:
                         self.pit[i][5] = 0.8
                         self.orderLimit -= 4
+                continue
 
             # 德克萨斯
             if self.pit[i][0] == 'Texas':
@@ -112,6 +143,7 @@ class TradeStation(Facility):
                     self.pit[i][6] = '恩怨 默契'
                     if 'Exusiai' in self.pit[0][0] or 'Exusiai' in self.pit[1][0] or 'Exusiai' in self.pit[2][0]:
                         self.pit[i][5] -= 0.3
+                continue
 
             # 巫恋
             if self.pit[i][0] == 'Shamare':
@@ -123,6 +155,7 @@ class TradeStation(Facility):
                     self.efficiency = 0.45 * self.workerNum - 0.45
                     for j in range(3):
                         self.pit[j][5] += 0.25
+                continue
 
             # 能天使
             if self.pit[i][0] == 'Exusiai':
@@ -132,6 +165,236 @@ class TradeStation(Facility):
                 if self.pit[i][1] == 2:
                     self.pit[i][6] = '物流专家'
                     self.efficiency += 0.15
+                continue
+
+            # 海蒂
+            if self.pit[i][0] == 'Heidi':
+                self.pit[i][6] = '订单分发·α'
+                self.efficiency += 0.20
+                # 精二
+                if self.pit[i][1] == 2:
+                    self.pit[i][6] = '名流欢会'
+                    self.efficiency += 0.15
+                continue
+
+            # 雪雉
+            if self.pit[i][0] == 'Snowsant':
+                self.pit[i][6] = '天道酬勤·α'
+                self.efficiency += 0.25
+                # 精二
+                if self.pit[i][1] == 2:
+                    self.pit[i][6] = '天道酬勤·β'
+                    self.efficiency += 0.1
+                continue
+
+            # 谷米
+            if self.pit[i][0] == 'Gumi':
+                self.pit[i][6] = '交际'
+                self.efficiency += 0.3
+                self.pit[i][5] -= 0.25
+                continue
+            # 月见夜
+            if self.pit[i][0] == 'Midnight':
+                self.pit[i][6] = '交际'
+                self.efficiency += 0.3
+                self.pit[i][5] -= 0.25
+                continue
+            # 空爆
+            if self.pit[i][0] == 'Catapult':
+                self.pit[i][6] = '交际'
+                self.efficiency += 0.3
+                self.pit[i][5] -= 0.25
+                continue
+
+            # 火哨
+            if self.pit[i][0] == 'Firewhistle':
+                self.pit[i][6] = '暖场'
+                for j in range(3):
+                    self.pit[j][5] -= 0.1
+                # 精二
+                if self.pit[i][1] == 2:
+                    self.pit[i][6] = '暖场 代为说项'
+                    self.efficiency += 0.15 * self.workerNum - 0.15
+                continue
+
+            # 铎铃
+            if self.pit[i][0] == 'Wind Chimes':
+                self.pit[i][6] = '跋山涉水'
+                for j in range(3):
+                    self.pit[j][5] -= (0.1 + 0.01 * Facility.combo_RenJianYanHuo)
+                # 精二
+                if self.pit[i][1] == 2:
+                    self.pit[i][6] = '万里传书'
+                    for j in range(3):
+                        self.pit[j][5] -= 0.01 * Facility.combo_RenJianYanHuo
+                continue
+
+            # 可颂
+            if self.pit[i][0] == 'Croissant':
+                self.pit[i][6] = '企鹅物流·α'
+                self.efficiency += 0.20
+                # 精二
+                if self.pit[i][1] == 2:
+                    self.pit[i][6] = '使命必达'
+                    self.efficiency += 0.1
+                    self.orderLimit += 1
+                continue
+
+            # 拜松
+            if self.pit[i][0] == 'Bison':
+                self.pit[i][6] = '峯驰物流'
+                self.efficiency += 0.20
+                # 精二
+                if self.pit[i][1] == 2:
+                    self.pit[i][6] = '少当家'
+                    self.efficiency += 0.1
+                    self.orderLimit += 1
+                continue
+
+            # 空
+            if self.pit[i][0] == 'Sora':
+                if self.pit[i][1] == 2:
+                    self.pit[i][6] = '企鹅物流·β'
+                    self.efficiency += 0.3
+                continue
+
+            # 夜刀、夜烟、安比尔、慕斯、缠丸、芬
+            if self.pit[i][0] == 'Yato':
+                self.pit[i][6] = '订单分发·β'
+                self.efficiency += 0.3
+                continue
+            if self.pit[i][0] == 'Haze':
+                if self.pit[i][1] == 1:
+                    self.pit[i][6] = '订单分发·β'
+                    self.efficiency += 0.3
+                continue
+            if self.pit[i][0] == 'Ambriel':
+                if self.pit[i][1] == 1:
+                    self.pit[i][6] = '订单分发·β'
+                    self.efficiency += 0.3
+                continue
+            if self.pit[i][0] == 'Muse':
+                self.pit[i][6] = '订单分发·β'
+                self.efficiency += 0.3
+                continue
+            if self.pit[i][0] == 'Matoimaru':
+                if self.pit[i][1] == 1:
+                    self.pit[i][6] = '订单分发·β'
+                    self.efficiency += 0.3
+                continue
+            if self.pit[i][0] == 'Fang':
+                if self.pit[i][1] == 1:
+                    self.pit[i][6] = '订单分发·β'
+                    self.efficiency += 0.3
+                continue
+
+            # 梓兰、玫兰莎、远山
+            if self.pit[i][0] == 'Orchid':
+                if self.pit[i][1] == 1:
+                    self.pit[i][6] = '供应管理'
+                    self.efficiency += 0.25
+                    self.orderLimit += 1
+                continue
+            if self.pit[i][0] == 'Melantha':
+                self.pit[i][6] = '供应管理'
+                self.efficiency += 0.25
+                self.orderLimit += 1
+                continue
+            if self.pit[i][0] == 'Gitano':
+                self.pit[i][6] = '供应管理'
+                self.efficiency += 0.25
+                self.orderLimit += 1
+                continue
+
+            # 银灰
+            if self.pit[i][0] == 'SliverAsh':
+                self.pit[i][6] = '喀兰贸易·α'
+                self.efficiency += 0.15
+                self.orderLimit += 2
+                # 精二
+                if self.pit[i][1] == 2:
+                    self.pit[i][6] = '喀兰之主'
+                    self.efficiency += 0.05
+                    self.orderLimit += 2
+                continue
+
+            # 安德切尔、深海色、蛇屠箱、香草
+            if self.pit[i][0] == 'Adnachiel':
+                self.pit[i][6] = '订单分发·α'
+                self.efficiency += 0.20
+                continue
+            if self.pit[i][0] == 'Deepcolor':
+                self.pit[i][6] = '订单分发·α'
+                self.efficiency += 0.20
+                continue
+            if self.pit[i][0] == 'Cuora':
+                if self.pit[i][1] == 1:
+                    self.pit[i][6] = '订单分发·α'
+                    self.efficiency += 0.20
+                continue
+            if self.pit[i][0] == 'Vanilla':
+                if self.pit[i][1] == 1:
+                    self.pit[i][6] = '订单分发·α'
+                    self.efficiency += 0.20
+                continue
+
+            # 崖心
+            if self.pit[i][0] == 'Cliffheart':
+                # 精二
+                if self.pit[i][1] == 2:
+                    self.pit[i][6] = '喀兰贸易·β'
+                    self.efficiency += 0.15
+                    self.orderLimit += 4
+                continue
+
+            # 角峰、讯使
+            if self.pit[i][0] == 'Matterhorn':
+                self.pit[i][6] = '喀兰贸易·α'
+                self.efficiency += 0.15
+                self.orderLimit += 2
+                continue
+            if self.pit[i][0] == 'Courier':
+                self.pit[i][6] = '喀兰贸易·α'
+                self.efficiency += 0.15
+                self.orderLimit += 2
+                continue
+
+            # 尤里卡
+            if self.pit[i][0] == 'U-Official':
+                self.pit[i][6] = '天真的谈判者'
+                self.efficiency += 0.1
+                self.orderPrefer = 0
+                continue
+
+            # 四月
+            if self.pit[i][0] == 'April':
+                self.pit[i][6] = '订单管理·α'
+                self.efficiency += 0.1
+                self.orderLimit += 2
+                # 精二
+                if self.pit[i][1] == 2:
+                    self.pit[i][6] = '订单管理·β'
+                    self.orderLimit += 2
+                continue
+
+            # 翎羽
+            if self.pit[i][0] == 'Plume':
+                # 精一
+                if self.pit[i][1] == 1:
+                    self.pit[i][6] = '订单管理·α'
+                    self.efficiency += 0.1
+                    self.orderLimit += 2
+                continue
+
+            # 黑角
+            if self.pit[i][0] == 'Noir Corne':
+                # 精一，这个比较特殊
+                if self.pit[i][1] == 1:
+                    self.pit[i][6] = '订单管理·α'
+                    self.efficiency += 0.1
+                    self.orderLimit += 2
+                continue
+
 
     # 信息输出
     def show_station_info(self):
@@ -164,6 +427,9 @@ print (trade1.pit)
 trade1.operator_load('Texas', 2, 0)
 trade1.operator_load('Lappland', 2, 1)
 trade1.operator_load('Exusiai', 2, 2)
+
+trade1.cal_efficiency()
+trade1.show_station_info()
 
 trade1.cal_efficiency()
 trade1.show_station_info()
