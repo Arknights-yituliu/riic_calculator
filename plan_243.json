@@ -1,0 +1,54 @@
+[
+  {
+    "type": "trade",
+    "level": 3
+  },
+  {
+    "type": "trade",
+    "level": 3
+  },
+  {
+    "type": "trade",
+    "level": 0
+  },
+  {
+    "type": "trade",
+    "level": 0
+  },
+  {
+    "type": "trade",
+    "level": 0
+  },
+  {
+    "type": "factory",
+    "level": 3
+  },
+  {
+    "type": "factory",
+    "level": 3
+  },
+  {
+    "type": "factory",
+    "level": 3
+  },
+  {
+    "type": "factory",
+    "level": 3
+  },
+  {
+    "type": "factory",
+    "level": 0
+  },
+  {
+    "type": "powerplant",
+    "level": 3
+  },
+  {
+    "type": "powerplant",
+    "level": 3
+  },
+  {
+    "type": "powerplant",
+    "level": 3
+  }
+]

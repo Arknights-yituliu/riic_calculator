@@ -1,5 +1,9 @@
 import json
 
+#加载基建布局方案
+with open('plan_243.json', 'r', encoding='utf-8') as riic_plan:
+    riic_plan_data = json.load(riic_plan)
+
 # 导入一份干员基本信息以备不时之需
 with open('operators_info.json', 'r', encoding='utf-8') as ops_data_file:
     ops_data = json.load(ops_data_file)
@@ -20,6 +24,7 @@ class DayTotal:
 
 # 以设施为单位进行计算
 class Facility:
+    # 组合计算
     combo_MengJing = 0
     combo_JiYiSuiPian = 0
     combo_XiaoJie = 0
@@ -32,12 +37,30 @@ class Facility:
     combo_QingBaoChuBei = 0
     combo_WuSaSiTeYin = 0
 
+    combo_MuTianLiao = 0
+
+    # 站点
+    num_TradeStation = 0
+    num_Factory = 0
+
+
     def __init__(self):
         # 干员，精英等级，心情，工作时长，前任干员，心情消耗，技能名称
         self.pit = [['n', 0, 0, 0, 'n', 0, 'n'], ['x', 0, 0, 0, 'n', 0, 'n'], ['x', 0, 0, 0, 'n', 0, 'n']]
 
         self.type = 'none'
         self.lvl = 1
+
+    # 干员进驻
+    def operator_load(self, operator, elite, position, mood=24):
+        self.pit[position][4] = self.pit[position][0]
+        self.pit[position][0] = operator
+        self.pit[position][1] = elite
+        self.pit[position][2] = mood
+        # 换干员则重置工作时长
+        if self.pit[position][4] != self.pit[position][0]:
+            self.pit[position][3] = 0
+        self.pit[position][5] = 1
 
 
 # 以贸易站为例
@@ -55,7 +78,7 @@ class TradeStation(Facility):
 
     def __init__(self):
         super().__init__()
-        TradeStation.totalNum += 1
+        Facility.num_TradeStation += 1
 
         # 阵营判定区
         self.camp_SeaHunter = 0
@@ -74,16 +97,7 @@ class TradeStation(Facility):
         self.orderLimit = 6
         self.workerNum = 0
 
-    # 干员进驻
-    def operator_load(self, operator, elite, position, mood=24):
-        self.pit[position][4] = self.pit[position][0]
-        self.pit[position][0] = operator
-        self.pit[position][1] = elite
-        self.pit[position][2] = mood
-        # 换干员则重置工作时长
-        if self.pit[position][4] != self.pit[position][0]:
-            self.pit[position][3] = 0
-        self.pit[position][5] = 1
+
 
 
     # 预先计算组合
@@ -395,6 +409,40 @@ class TradeStation(Facility):
                     self.orderLimit += 2
                 continue
 
+            # 泰拉大陆调查团
+            if self.pit[i][0] == 'Terra Research Commission':
+                self.pit[i][6] = '可爱的艾露猫'
+                self.efficiency += 0.05 + Facility.combo_MuTianLiao * 0.03
+                self.orderLimit += 2
+                continue
+
+            # 石英
+            if self.pit[i][0] == 'Quartz':
+                # 精一
+                if self.pit[i][1] == 1:
+                    self.pit[i][6] = '精准排期'
+                    self.efficiency += 0.3
+                    # 后人的智慧
+                continue
+
+            # 鸿雪
+            # 图耶
+            # 伺夜
+            # 凄凉
+            # 孑
+            # 空弦
+            # 黑键
+            # 乌有
+            # 明椒
+            # 柏喙
+            # 卡夫卡
+            # 但书
+            # 贝娜
+            # 龙舌兰
+            # 史都华德
+            # 暗索
+            # 桃金娘
+
 
     # 信息输出
     def show_station_info(self):
@@ -406,6 +454,150 @@ class TradeStation(Facility):
     # 心情验算，这些以后再说
     def cal_moodConsumption(self):
         pass
+
+
+class Factory(Facility):
+    def __init__(self):
+        super().__init__()
+        Facility.num_Factory += 1
+
+        # 阵营判定区
+        self.camp_SeaHunter = 0
+        self.camp_RainbowSix = 0
+        self.camp_qiewuliu = 0
+
+        # 基础信息
+        # self.category = 'trade'
+        self.product_EXP = 1
+        self.product_Puregold = 1
+        self.initEfficiency = 1
+        # self.initOrderPrefer = 0
+        # self.consumption = 'puregold'
+        # self.consumptionEfficiency = 0
+        self.level = 3
+        # self.moodConsumption = 1
+        self.stockpile = 100
+        self.workerNum = 0
+
+    def cal_efficiency(self):
+        # 设施初始化
+        self.product_EXP = self.initEfficiency
+        self.product_Puregold = self.initEfficiency
+
+        for i in range(3):
+            # 干员状态初始化
+            self.pit[i][5] = 1
+
+        for i in range(3):
+            # 截云
+
+            # 断罪者
+            if self.pit[i][0] == 'Confiction':
+                # 精一
+                if self.pit[i][1] == 1:
+                    self.pit[i][6] = '拳术指导录像'
+                    self.product_EXP += 0.35
+                continue
+
+            # 食铁兽
+            if self.pit[i][0] == 'Feater':
+                self.pit[i][6] = '作战指导录像'
+                self.product_EXP += 0.3
+                # 精二
+                if self.pit[i][1] == 2:
+                    self.pit[i][6] = '拳术指导录像'
+                    self.product_EXP += 0.05
+                continue
+
+            # C3
+            if self.pit[i][0] == 'Castle-3':
+                # 精一 特殊
+                if self.pit[i][1] == 1:
+                    self.pit[i][6] = '作战指导录像'
+                    self.product_EXP += 0.3
+                continue
+            # 白雪
+            if self.pit[i][0] == 'ShiraYuki':
+                # 精一
+                if self.pit[i][1] == 1:
+                    self.pit[i][6] = '作战指导录像'
+                    self.product_EXP += 0.3
+                continue
+            # 霜叶
+            if self.pit[i][0] == 'FrostLeaf':
+                # 精一
+                if self.pit[i][1] == 1:
+                    self.pit[i][6] = '作战指导录像'
+                    self.product_EXP += 0.3
+                continue
+            # 红豆
+            if self.pit[i][0] == 'Vigna':
+                self.pit[i][6] = '作战指导录像'
+                self.product_EXP += 0.3
+                continue
+
+            # 帕拉斯
+            if self.pit[i][0] == 'Pallas':
+                self.pit[i][6] = '智慧之境'
+                self.stockpile += 8
+                self.pit[i][5] -= 0.25
+                # 精二
+                if self.pit[i][1] == 2:
+                    self.pit[i][6] = '胜利之计'
+                    self.product_EXP += 0.25
+                continue
+
+            #截云
+
+            #至简
+
+            #砾
+            if self.pit[i][0] == 'Gravel':
+                # 精一
+                if self.pit[i][1] == 1:
+                    self.pit[i][6] = '金属工艺·β'
+                    self.product_Puregold += 0.35
+                continue
+
+            #夜烟
+            if self.pit[i][0] == 'Haze':
+                self.pit[i][6] = '金属工艺·α'
+                self.product_Puregold += 0.3
+                continue
+            #斑点
+            if self.pit[i][0] == 'Spot':
+                # 精一
+                if self.pit[i][1] == 1:
+                    self.pit[i][6] = '金属工艺·α'
+                    self.product_Puregold += 0.3
+                continue
+
+            #清流
+            if self.pit[i][0] == 'Purestream':
+                # 精一
+                if self.pit[i][1] == 1:
+                    self.pit[i][6] = '再生能源'
+                    self.product_Puregold += 0.2 * Facility.num_TradeStation
+                continue
+
+            #迷迭香
+
+            #槐琥
+
+            # 拉普兰德
+            if self.pit[i][0] == 'Lappland':
+                self.pit[i][6] = '醉翁之意·α'
+                if 'Texas' in self.pit[0][0] or 'Texas' in self.pit[1][0] or 'Texas' in self.pit[2][0]:
+                    self.pit[i][5] -= 0.1
+                    self.orderLimit += 2
+                # 精二
+                if self.pit[i][1] == 2:
+                    self.pit[i][6] = '醉翁之意·β'
+                    if 'Texas' in self.pit[0][0] or 'Texas' in self.pit[1][0] or 'Texas' in self.pit[2][0]:
+                        self.pit[i][5] = 0.8
+                        self.orderLimit -= 4
+                continue
+
 
 
 def print_hi(name):
@@ -424,6 +616,22 @@ f1 = Facility()
 
 print (trade1.pit)
 
+
+riic = []
+
+def riic_init():
+    for room in riic_plan_data:
+        if room["type"] == "trade":
+            trade = TradeStation()
+            riic.append(trade)
+        if room["type"] == "factory":
+            factory = Factory()
+            riic.append(factory)
+    for room in riic:
+        print(room.pit)
+
+
+
 trade1.operator_load('Texas', 2, 0)
 trade1.operator_load('Lappland', 2, 1)
 trade1.operator_load('Exusiai', 2, 2)
@@ -433,3 +641,6 @@ trade1.show_station_info()
 
 trade1.cal_efficiency()
 trade1.show_station_info()
+
+print('------')
+riic_init()
