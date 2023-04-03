@@ -1,0 +1,206 @@
+{
+  "trade": [
+    {
+      "product": "LMD",
+      "operator_list": [
+        {
+          "name": "Lappland",
+          "elite": 2,
+          "mood": 24
+        },
+        {
+          "name": "Texas",
+          "elite": 2,
+          "mood": 24
+        },
+        {
+          "name": "Exusiai",
+          "elite": 2,
+          "mood": 24
+        }
+      ]
+    },
+    {
+      "product": "LMD",
+      "operator_list": [
+        {
+          "name": "Gumi",
+          "elite": 1,
+          "mood": 24
+        },
+        {
+          "name": "Midnight",
+          "elite": 1,
+          "mood": 24
+        },
+        {
+          "name": "Catapult",
+          "elite": 1,
+          "mood": 24
+        }
+      ]
+    },
+    {
+      "product": "LMD",
+      "operator_list": [
+        {
+          "name": "x",
+          "elite": 2,
+          "mood": 24
+        },
+        {
+          "name": "x",
+          "elite": 2,
+          "mood": 24
+        },
+        {
+          "name": "x",
+          "elite": 2,
+          "mood": 24
+        }
+      ]
+    },
+    {
+      "product": "LMD",
+      "operator_list": [
+        {
+          "name": "x",
+          "elite": 2,
+          "mood": 24
+        },
+        {
+          "name": "x",
+          "elite": 2,
+          "mood": 24
+        },
+        {
+          "name": "x",
+          "elite": 2,
+          "mood": 24
+        }
+      ]
+    },
+    {
+      "product": "LMD",
+      "operator_list": [
+        {
+          "name": "x",
+          "elite": 2,
+          "mood": 24
+        },
+        {
+          "name": "x",
+          "elite": 2,
+          "mood": 24
+        },
+        {
+          "name": "x",
+          "elite": 2,
+          "mood": 24
+        }
+      ]
+    }
+  ],
+  "factory": [
+    {
+      "product": "EXP",
+      "operator_list": [
+        {
+          "name": "Feater",
+          "elite": 2,
+          "mood": 24
+        },
+        {
+          "name": "Castle-3",
+          "elite": 1,
+          "mood": 24
+        },
+        {
+          "name": "ShiraYuki",
+          "elite": 1,
+          "mood": 24
+        }
+      ]
+    },
+    {
+      "product": "EXP",
+      "operator_list": [
+        {
+          "name": "FrostLeaf",
+          "elite": 1,
+          "mood": 24
+        },
+        {
+          "name": "Vigna",
+          "elite": 1,
+          "mood": 24
+        },
+        {
+          "name": "Confiction",
+          "elite": 1,
+          "mood": 24
+        }
+      ]
+    },
+    {
+      "product": "Puregold",
+      "operator_list": [
+        {
+          "name": "Gravel",
+          "elite": 2,
+          "mood": 24
+        },
+        {
+          "name": "Spot",
+          "elite": 2,
+          "mood": 24
+        },
+        {
+          "name": "Haze",
+          "elite": 2,
+          "mood": 24
+        }
+      ]
+    },
+    {
+      "product": "Puregold",
+      "operator_list": [
+        {
+          "name": "Roberta",
+          "elite": 1,
+          "mood": 24
+        },
+        {
+          "name": "Steward",
+          "elite": 1,
+          "mood": 24
+        },
+        {
+          "name": "Perfumer",
+          "elite": 1,
+          "mood": 24
+        }
+      ]
+    },
+    {
+      "product": "EXP",
+      "operator_list": [
+        {
+          "name": "x",
+          "elite": 2,
+          "mood": 24
+        },
+        {
+          "name": "x",
+          "elite": 2,
+          "mood": 24
+        },
+        {
+          "name": "x",
+          "elite": 2,
+          "mood": 24
+        }
+      ]
+    }
+  ]
+}

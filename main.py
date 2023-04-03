@@ -3,6 +3,9 @@ import json
 #加载基建布局方案
 with open('plan_243.json', 'r', encoding='utf-8') as riic_plan:
     riic_plan_data = json.load(riic_plan)
+#加载排班方案
+with open('schedule_243_a.json', 'r', encoding='utf-8') as operator_plan:
+    operator_plan_data = json.load(operator_plan)
 
 # 导入一份干员基本信息以备不时之需
 with open('operators_info.json', 'r', encoding='utf-8') as ops_data_file:
@@ -583,6 +586,51 @@ class Factory(Facility):
             #迷迭香
 
             #槐琥
+            #梅尔
+            if self.pit[i][0] == 'Mayer':
+                # 精二
+                if self.pit[i][1] == 2:
+                    self.pit[i][6] = '咪波·制造型'
+                    self.product_EXP += 0.3
+                    self.product_Puregold += 0.3
+                continue
+
+            # 灰豪
+            # 远牙
+            # 野鬃
+
+            # 多萝西
+            # 星源
+            # 白面鸮
+            # 赫默
+
+            # 调香师
+            if self.pit[i][0] == 'Perfumer':
+                # 精一
+                if self.pit[i][1] == 1:
+                    self.pit[i][6] = '标准化·β'
+                    self.product_EXP += 0.25
+                    self.product_Puregold += 0.25
+                continue
+
+            # 史都华德
+            if self.pit[i][0] == 'Steward':
+                # 精一
+                if self.pit[i][1] == 1:
+                    self.pit[i][6] = '标准化·β'
+                    self.product_EXP += 0.25
+                    self.product_Puregold += 0.25
+                continue
+
+            # 罗比菈塔
+            if self.pit[i][0] == 'Roberta':
+                # 精一
+                if self.pit[i][1] == 1:
+                    self.pit[i][6] = '标准化·β'
+                    self.product_EXP += 0.25
+                    self.product_Puregold += 0.25
+                continue
+
 
             # 拉普兰德
             if self.pit[i][0] == 'Lappland':
@@ -617,20 +665,43 @@ f1 = Facility()
 print (trade1.pit)
 
 
-riic = []
+# riic = []
+#
+# def riic_init():
+#     for room in riic_plan_data:
+#         if room["type"] == "trade":
+#             trade = TradeStation()
+#             riic.append(trade)
+#         if room["type"] == "factory":
+#             factory = Factory()
+#             riic.append(factory)
+#     for room in riic:
+#         print(room.pit)
+#
+# def riic_load():
+#     for room in riic:
+#         room.operator_load
+#         print(room)
+#     pass
 
-def riic_init():
-    for room in riic_plan_data:
-        if room["type"] == "trade":
-            trade = TradeStation()
-            riic.append(trade)
-        if room["type"] == "factory":
-            factory = Factory()
-            riic.append(factory)
-    for room in riic:
-        print(room.pit)
+trade_0 = TradeStation()
+trade_1 = TradeStation()
+trade_2 = TradeStation()
+trade_3 = TradeStation()
+trade_4 = TradeStation()
+factory_0 = Factory()
+factory_1 = Factory()
+factory_2 = Factory()
+factory_3 = Factory()
+factory_4 = Factory()
 
 
+def riic_load():
+    trade_0.operator_load(operator_plan_data["trade"][1]["operator_list"][0]["name"], 2, 0)
+    trade_0.operator_load(operator_plan_data["trade"][1]["operator_list"][1]["name"], 2, 1)
+    trade_0.operator_load(operator_plan_data["trade"][1]["operator_list"][2]["name"], 2, 2)
+    trade_0.cal_efficiency()
+    trade_0.show_station_info()
 
 trade1.operator_load('Texas', 2, 0)
 trade1.operator_load('Lappland', 2, 1)
@@ -642,5 +713,10 @@ trade1.show_station_info()
 trade1.cal_efficiency()
 trade1.show_station_info()
 
+print(operator_plan_data["trade"][0]["operator_list"][0]["name"])
+
 print('------')
-riic_init()
+# riic_init()
+print('------')
+
+riic_load()
