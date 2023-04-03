@@ -1,11 +1,13 @@
 import json
 
 #加载基建布局方案
-with open('plan_243.json', 'r', encoding='utf-8') as riic_plan:
+with open('riic_plan_243.json', 'r', encoding='utf-8') as riic_plan:
     riic_plan_data = json.load(riic_plan)
+
+
 #加载排班方案
-with open('schedule_243_a.json', 'r', encoding='utf-8') as operator_plan:
-    operator_plan_data = json.load(operator_plan)
+with open('schedule_243_a.json', 'r', encoding='utf-8') as op_plan:
+    op_plan_data = json.load(op_plan)
 
 # 导入一份干员基本信息以备不时之需
 with open('operators_info.json', 'r', encoding='utf-8') as ops_data_file:
@@ -47,17 +49,17 @@ class Facility:
     num_Factory = 0
 
 
-    def __init__(self):
+    def __init__(self, level = 0):
         # 干员，精英等级，心情，工作时长，前任干员，心情消耗，技能名称
         self.pit = [['n', 0, 0, 0, 'n', 0, 'n'], ['x', 0, 0, 0, 'n', 0, 'n'], ['x', 0, 0, 0, 'n', 0, 'n']]
 
         self.type = 'none'
-        self.lvl = 1
+        self.level = level
 
     # 干员进驻
-    def operator_load(self, operator, elite, position, mood=24):
+    def op_load(self, op, elite, position, mood=24):
         self.pit[position][4] = self.pit[position][0]
-        self.pit[position][0] = operator
+        self.pit[position][0] = op
         self.pit[position][1] = elite
         self.pit[position][2] = mood
         # 换干员则重置工作时长
@@ -79,8 +81,8 @@ class TradeStation(Facility):
     puregold = 0
     yuanshisuipian = 0
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, level = 0):
+        super().__init__(level)
         Facility.num_TradeStation += 1
 
         # 阵营判定区
@@ -95,7 +97,7 @@ class TradeStation(Facility):
         self.initOrderPrefer = 0
         # self.consumption = 'puregold'
         # self.consumptionEfficiency = 0
-        self.level = 3
+        # self.level = level
         # self.moodConsumption = 1
         self.orderLimit = 6
         self.workerNum = 0
@@ -450,8 +452,7 @@ class TradeStation(Facility):
     # 信息输出
     def show_station_info(self):
         for i in range(3):
-            print('干员' + self.pit[i][0] + str(self.pit[i][6]))
-
+            print('干员' + self.pit[i][0] + '精英' + str(self.pit[i][1]) + str(self.pit[i][6]))
         print('总效率' + str(self.efficiency))
 
     # 心情验算，这些以后再说
@@ -460,8 +461,8 @@ class TradeStation(Facility):
 
 
 class Factory(Facility):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, level = 0):
+        super().__init__(level)
         Facility.num_Factory += 1
 
         # 阵营判定区
@@ -477,7 +478,7 @@ class Factory(Facility):
         # self.initOrderPrefer = 0
         # self.consumption = 'puregold'
         # self.consumptionEfficiency = 0
-        self.level = 3
+        # self.level = 3
         # self.moodConsumption = 1
         self.stockpile = 100
         self.workerNum = 0
@@ -659,7 +660,7 @@ if __name__ == '__main__':
 
 print(ops_data['char_4077_palico']['name'])
 
-trade1 = TradeStation()
+trade1 = TradeStation(3)
 f1 = Facility()
 
 print (trade1.pit)
@@ -680,32 +681,44 @@ print (trade1.pit)
 #
 # def riic_load():
 #     for room in riic:
-#         room.operator_load
+#         room.op_load
 #         print(room)
 #     pass
 
-trade_0 = TradeStation()
-trade_1 = TradeStation()
-trade_2 = TradeStation()
-trade_3 = TradeStation()
-trade_4 = TradeStation()
-factory_0 = Factory()
-factory_1 = Factory()
+trade_0 = TradeStation(riic_plan_data["trade"][0])
+trade_1 = TradeStation(riic_plan_data["trade"][1])
+trade_2 = TradeStation(riic_plan_data["trade"][2])
+trade_3 = TradeStation(riic_plan_data["trade"][3])
+trade_4 = TradeStation(riic_plan_data["trade"][4])
+factory_0 = Factory(riic_plan_data["factory"][0])
+factory_1 = Factory(riic_plan_data["factory"][1])
 factory_2 = Factory()
 factory_3 = Factory()
 factory_4 = Factory()
 
+print(trade_0.level)
 
 def riic_load():
-    trade_0.operator_load(operator_plan_data["trade"][1]["operator_list"][0]["name"], 2, 0)
-    trade_0.operator_load(operator_plan_data["trade"][1]["operator_list"][1]["name"], 2, 1)
-    trade_0.operator_load(operator_plan_data["trade"][1]["operator_list"][2]["name"], 2, 2)
+    for i in range(3):
+        trade_0.op_load(op_plan_data["trade"][0]["op_list"][i]["name"], op_plan_data["trade"][0]["op_list"][i]["elite"], i)
     trade_0.cal_efficiency()
     trade_0.show_station_info()
+    print('------')
+    for i in range(3):
+        trade_1.op_load(op_plan_data["trade"][1]["op_list"][i]["name"], op_plan_data["trade"][1]["op_list"][i]["elite"], i)
+    trade_1.cal_efficiency()
+    trade_1.show_station_info()
+    print('------')
+    for i in range(3):
+        trade_2.op_load(op_plan_data["trade"][2]["op_list"][i]["name"], op_plan_data["trade"][2]["op_list"][i]["elite"], i)
+    trade_2.cal_efficiency()
+    trade_2.show_station_info()
+    print('------')
 
-trade1.operator_load('Texas', 2, 0)
-trade1.operator_load('Lappland', 2, 1)
-trade1.operator_load('Exusiai', 2, 2)
+
+trade1.op_load('Texas', 2, 0)
+trade1.op_load('Lappland', 2, 1)
+trade1.op_load('Exusiai', 2, 2)
 
 trade1.cal_efficiency()
 trade1.show_station_info()
@@ -713,7 +726,7 @@ trade1.show_station_info()
 trade1.cal_efficiency()
 trade1.show_station_info()
 
-print(operator_plan_data["trade"][0]["operator_list"][0]["name"])
+print(op_plan_data["trade"][0]["op_list"][0]["name"])
 
 print('------')
 # riic_init()
